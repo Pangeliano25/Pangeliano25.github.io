@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Cumpleaños de Stephano!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           VARIABLES Y ESTILOS BASE (Mobile First)
+           ========================================= */
+        :root {
+            --celeste-cielo: #4DB8FF;
+            --azul-profundo: #006bb3;
+            --azul-tarjeta: #1a75ff;
+            --arena-amarillo: #FFD700;
+            --verde-palmera: #32CD32;
+            --blanco: #ffffff;
+            --gris-texto: #555555;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, var(--celeste-cielo) 0%, #a2d9ff 50%, #ffe4b5 100%);
+            color: #333;
+            text-align: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--azul-profundo);
+            text-shadow: 2px 2px 0px var(--blanco);
+        }
+        
+        .main-font{
+            font-size: 2em;
+        }
+
+        .second-font{
+            font-size: 1.1em;
+        }
+
+        /* Contenedor principal responsivo */
+        .container {
+            width: 100%;
+            max-width: 600px; /* En PC no se estirará de más */
+            margin: 0 auto;
+            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            min-height: 100vh;
+        }
+
+        section {
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 90%;
+        }
+
+        .first-section{
+            margin-top: 0;
+            box-shadow: none;
+            background-color: linear-gradient(180deg, var(--celeste-cielo) 0%, #a2d9ff 50%, #ffe4b5 100%);;
+        }
+
+        /* =========================================
+           1. PANTALLA DE INTRODUCCIÓN Y ANIMACIONES
+           ========================================= */
+        #intro-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url(Gemini_Generated_Image_tdys3wtdys3wtdys.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .anim-img {
+            width: 80%;
+            max-width: 300px;
+            border-radius: 15px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards ease-out;
+        }
+
+        /* Tiempos de aparición escalonados */
+        .delay-1 { animation-delay: 0.5s; }
+        .delay-2 { animation-delay: 1.5s; }
+        .delay-3 { animation-delay: 2.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-principal {
+            background-color: var(--arena-amarillo);
+            color: var(--azul-profundo);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            font-family: 'Fredoka One', cursive;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #daa520;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards ease-out 3.5s; /* Aparece al final */
+        }
+        .btn-principal:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* =========================================
+            2. PANTALLA DEL VIDEO
+           ========================================= */
+        #video-screen {
+            display: none;
+            position: fixed; /* Lo saca del contenedor principal */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            z-index: 99; /* Asegura que tape todo lo demás */
+        }
+
+        #invitation-video {
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            border-radius: 0;
+            object-fit: cover; /* Llena toda la pantalla. Si notas que corta mucho los bordes de tu video, cambia la palabra "cover" por "contain" */
+        }
+
+        .btn-saltar {
+            position: absolute;
+            bottom: 40px; /* Distancia desde abajo */
+            left: 50%;
+            transform: translateX(-50%); /* Centrado perfecto */
+            background: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente para que siempre se lea */
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100; /* Asegura que el botón quede encima del video */
+        }
+
+        /* =========================================
+           3. CONTENIDO PRINCIPAL (Oculto al inicio)
+           ========================================= */
+        #main-content {
+            display: none;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- ITINERARIO (Estilo Cajas / Tarjetas) --- */
+        .itinerario-container {
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .itinerario-card {
+            background: linear-gradient(90deg, var(--azul-profundo) 0%, #36abf9 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Adorno simulando nieve/brillos de tu imagen */
+        
+
+        .time-icon { font-size: 2.5em; margin-bottom: 5px; }
+        .time-hour { font-size: 1.8em; font-family: 'Fredoka One', cursive; margin: 5px 0; color: var(--blanco); text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .time-divider { border-top: 1px dashed rgba(255,255,255,0.5); margin: 10px auto; width: 60%; }
+        .time-title { text-transform: uppercase; font-weight: bold; font-size: 1.1em; margin: 5px 0; color: var(--arena-amarillo); }
+        .time-desc { font-size: 0.95em; line-height: 1.4; opacity: 0.95; }
+
+        /* --- GALERÍA CARRUSEL --- */
+        .carousel-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+        .carousel-slide {
+            display: none;
+            width: max-content;
+            border-radius: 15px;
+            border: 4px solid var(--arena-amarillo);
+            height: 215px;
+            margin: auto;
+        }
+        .carousel-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0,0,0,0.5);
+            border: none;
+        }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev { left: 0; }
+        .prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
+
+        /* --- OTROS COMPONENTES --- */
+        .music-btn {
+            background-color: var(--verde-palmera);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 100%;
+            font-size: 1em;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            margin: 5px;
+            margin-bottom: 20px;
+            width: auto;
+            box-shadow: 0 4px 0 #228B22;
+        }
+
+        li{
+            text-align: left;
+        }
+
+        .countdown { display: flex; justify-content: center; gap: 10px; font-family: 'Fredoka One', cursive; }
+        .time-box { background-color: var(--azul-profundo); color: var(--blanco); padding: 10px; border-radius: 10px; flex: 1; text-shadow: none; }
+        .time-box span { display: block; font-size: 1.5em; }
+        .time-box p { margin: 0; font-size: 0.7em; font-family: 'Nunito', sans-serif; }
+
+        .map-container { position: relative; padding-bottom: 75%; height: 0; overflow: hidden; border-radius: 15px; }
+        .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .gift-card { background: white; border: 1px solid #e0e0e0; border-radius: 15px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+        .gift-info h4 { margin: 0 0 5px 0; color: var(--azul-profundo); }
+        .gift-info p { margin: 0; font-size: 0.9em; }
+        .copy-btn { background-color: #5b7c99; color: white; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+
+        .rsvp-form input, .rsvp-form select { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid var(--celeste-cielo); border-radius: 10px; font-family: 'Nunito', sans-serif; }
+        .drive-btn { display: inline-block; background-color: var(--azul-profundo); color: white; padding: 15px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" style="padding: 0;">
+
+        <div id="intro-screen">
+            <img src="LETRERO.png" alt="Intro 1" class="anim-img delay-1" style="width: 60%; padding-top: 15px;">
+            <img src="TRALALERO.png" alt="Intro 2" class="anim-img delay-2" style="width: 60%;">
+            
+            <button class="btn-principal" onclick="iniciarVideo()">🎬 Ver Invitación</button>
+        </div>
+
+        <div id="video-screen">
+            <video id="invitation-video" playsinline>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+            <button class="btn-saltar" onclick="mostrarInvitacion()">Saltar Video ⏭️</button>
+        </div>
+
+        <div id="main-content">
+            
+            <button class="music-btn" onclick="toggleMusic()">▶︎</button>
+
+            <section class="first-section">
+                <h1 class="second-font">Estas coordialmente invitado a</h1>
+                <h2 class="main-font">Mi cumpleaños</h2>
+                <div class="countdown">
+                    <div class="time-box"><span id="days">00</span><p>Días</p></div>
+                    <div class="time-box"><span id="hours">00</span><p>Horas</p></div>
+                    <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
+                    <div class="time-box"><span id="seconds">00</span><p>Seg</p></div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Ubicación</h2>
+                <p><strong>Restaurante Mi Ñato</strong><br>Te esperamos para celebrar juntos.</p>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.3487011619627!2d-79.505777525122!3d-7.426608373157522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904d4ee8b29de315%3A0x523c2bf0697437f8!2sC.%20Dos%20de%20Mayo%20720%2C%20San%20Pedro%20de%20Lloc%2013801!5e0!3m2!1ses!2spe!4v1774197372217!5m2!1ses!2spe" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </section>
+
+            <section class="itinerario-container">
+                
+                <div class="itinerario-card">
+                    <div class="time-icon">🤝</div>
+                    <div class="time-hour">14:30 – 15:00</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Recepción de Invitados</div>
+                    <div class="time-desc">¡Te estaremos esperando en la puerta con los brazos abiertos para que te sientas como en casa!</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">📸</div>
+                    <div class="time-hour">15:00 – 15:30</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Sesión de Fotos</div>
+                    <div class="time-desc">Capturaremos los mejores momentos y las poses más divertidas con Stephano.</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">🎪</div>
+                    <div class="time-hour">15:30 – 16:30</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Inicio del Show Infantil</div>
+                    <div class="time-desc">¡Mucha puntualidad por favor! No querrás perderte las locuras y sorpresas del show.</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">🧃</div>
+                    <div class="time-hour">16:30 – 17:00</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Break y Refrigerio (Niños)</div>
+                    <div class="time-desc">Momento para recargar energías con deliciosos bocaditos y refrescos.</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">✨</div>
+                    <div class="time-hour">17:00 – 18:00</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Burbujas, Magia y Globos</div>
+                    <div class="time-desc">¡Un espectáculo mágico! Burbujas gigantes y figuras con globos para todos.</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">🥪</div>
+                    <div class="time-hour">18:00 – 18:30</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">Refrigerio para Adultos</div>
+                    <div class="time-desc">Un momento especial para que los más grandes también disfruten.</div>
+                </div>
+
+                <div class="itinerario-card">
+                    <div class="time-icon">🎂</div>
+                    <div class="time-hour">18:30 – 19:00</div>
+                    <div class="time-divider"></div>
+                    <div class="time-title">¡Feliz Cumpleaños!</div>
+                    <div class="time-desc">Cantaremos el Happy Birthday, romperemos la piñata y entregaremos las sorpresitas.</div>
+                </div>
+
+            </section>
+
+            <section>
+                <h2>Dress Code</h2>
+                <p>👕 <strong>Ropa Cómoda / Sport</strong><br>¡Listos para saltar, correr y jugar sin parar!</p>
+            </section>
+
+            <section style="padding: 20px 0;">
+                <h2>Galería de Fotos</h2>
+                <div class="carousel-container">
+                    <img class="carousel-slide active" src="foto1.jpeg" alt="Foto 1">
+                    <img class="carousel-slide" src="foto2.jpeg" alt="Foto 2">
+                    <img class="carousel-slide" src="foto3.jpeg" alt="Foto 3">
+                    <img class="carousel-slide" src="foto4.jpeg" alt="Foto 4" style="width: 90%; height: auto;">
+                    <img class="carousel-slide" src="foto5.jpeg" alt="Foto 5">
+                    <img class="carousel-slide" src="foto6.jpeg" alt="Foto 6">
+                    <img class="carousel-slide" src="foto7.jpeg" alt="Foto 7">
+                    <img class="carousel-slide" src="foto8.jpeg" alt="Foto 8">
+                    <img class="carousel-slide" src="foto9.jpeg" alt="Foto 9">
+                    <img class="carousel-slide" src="foto10.jpeg" alt="Foto 10">
+                    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+            </section>
+
+            <section class="gift-section">
+                <h2>Regalos</h2>
+                <p>Si deseas acompañarnos con un obsequio, hemos habilitado las siguientes opciones:</p>
+                <h3>Sugerencia de Regalos</h3>
+                <p>
+                    <ul>
+                        <li>Polos talla 8</li>
+                        <li>Pantalón talla 8</li>
+                        <li>Zapatos talla 26-27-28</li>
+                        <li>Juguetes didácticos</li>
+                        <li>Colonias</li>
+                        <li>Medias</li>
+                        <li>Calzoncillos</li>
+                    </ul>
+                </p>
+                <p>Tambien puedes enviarnos tu regalo por los siguientes medios:</p>
+                <div class="gift-card">
+                    <div class="gift-info">
+                        <h4>Cuenta BCP</h4>
+                        <p>Ana Gomez</p>
+                        <strong id="bcp-num">19497275369046</strong>
+                    </div>
+                    <button class="copy-btn" onclick="copyText('bcp-num')">Copiar</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-info">
+                        <h4>Yape o Plin</h4>
+                        <p>Ana Gomez</p>
+                        <strong id="yape-num">940669088</strong>
+                    </div>
+                    <button class="copy-btn" onclick="copyText('yape-num')">Copiar</button>
+                </div>
+                
+                <div class="gift-card">
+                    <div class="gift-info">
+                        <h4>Cuenta Interbancaria</h4>
+                        <p>Marcos Guerra</p>
+                        <strong id="inter-num">00219419727536904699</strong>
+                    </div>
+                    <button class="copy-btn" onclick="copyText('inter-num')">Copiar</button>
+                </div>
+            </section>
+
+            <section>
+                <h2>¡Comparte tus Recuerdos!</h2>
+                <p>Sube las fotos o videos que tomes en la fiesta a nuestra carpeta compartida.</p>
+                <a href="https://drive.google.com/drive/folders/18d1vYRwauO6N1RP0EmLyvzMOC_P_3Q3P?usp=sharing" target="_blank" class="drive-btn">📁 Subir Fotos aquí</a>
+                <img src="qr.png" alt="QR" style="width: 10em; padding-top: 15px;">
+            </section>
+
+            <section>
+                <h2>Confirmar Asistencia</h2>
+                <form class="rsvp-form" id="registroForm">
+                    <input type="text" id="familia" name="familia" placeholder="Nombre de la Familia o Invitado" required>
+                    <input type="number" id="adultos" name="adultos" min="0" placeholder="Número de adultos" required>
+                    <input type="number" id="ninos" name="ninos" min="0" placeholder="Número de niños" required>
+
+                    <button type="submit" class="btn-principal" style="width: 100%; opacity: 1; animation: none;">¡Sí, asistiré!</button>
+                    <p id="mensajeEstado" style="text-align: center; color: green;"></p>
+                </form>
+            </section>
+            
+            <h3 style="font-family: 'Titan One', sans-serif; font-size: 1em; font-weight: 100; text-shadow: none;">Te esperamos, será una fiesta llena de alegria y muchos premios</h3>
+        </div>
+    </div>
+
+    <script>
+        // 1. LÓGICA DE NAVEGACIÓN (Intro -> Video -> Invitación)
+        const videoElement = document.getElementById('invitation-video');
+
+        function iniciarVideo() {
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('video-screen').style.display = 'flex';
+            videoElement.play();
+        }
+
+        function mostrarInvitacion() {
+            document.getElementById('video-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            videoElement.pause();
+            // Desplazar la pantalla hacia arriba
+            window.scrollTo(0, 0);
+        }
+
+        // Evento: Cuando el video termina naturalmente, muestra la invitación
+        videoElement.onended = function() {
+            mostrarInvitacion();
+        };
+
+        // 2. MÚSICA
+        const bgMusic = document.getElementById("bg-music");
+        let isPlaying = false;
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                document.querySelector('.music-btn').innerText = "▶︎";
+            } else {
+                bgMusic.play();
+                document.querySelector('.music-btn').innerText = "❚❚";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 3. CARRUSEL DE FOTOS
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        function moveSlide(n) {
+            slides[slideIndex].classList.remove('active');
+            slideIndex += n;
+            
+            // Volver al principio o al final si se pasa del límite
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            
+            slides[slideIndex].classList.add('active');
+        }
+
+        // 4. CUENTA REGRESIVA (11 de Mayo 2026, 15:00:00)
+        const countDownDate = new Date("May 11, 2026 15:00:00").getTime();
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerHTML = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector(".countdown").innerHTML = "¡LA FIESTA YA EMPEZÓ!";
+            }
+        }, 1000);
+
+        // 5. COPIAR TEXTO
+        function copyText(elementId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("¡Número copiado: " + textToCopy + "!");
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+        }
+
+        // 6. CONFIRMAR ASISTENCIA
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzn644puw7-OjlCV6EzhIlTO3rmUyeulY71SOItCuubDcquDm9kc941HODIDs7XOANs/exec'; 
+        const form = document.getElementById('registroForm');
+        const mensaje = document.getElementById('mensajeEstado');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); // Evita que la página se recargue
+            mensaje.innerText = "Enviando confirmación...";
+    
+            // Envía los datos al Google Sheet
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)}).then(response => {
+                mensaje.innerText = "¡Gracias! Su asistencia ha sido confirmada.";
+                form.reset(); // Limpia el formulario
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            mensaje.innerText = "Hubo un problema. Por favor intenta de nuevo.";
+            mensaje.style.color = "red";
+        });
+    });
+    </script>
+</body>
+</html>
